@@ -13,6 +13,16 @@ body { background:#06090f; color:#fff; font-family:'DM Sans'; margin:0; }
 header { text-align:center; padding:40px; }
 h1 { font-family:'Bebas Neue'; font-size:60px; }
 
+button {
+  margin-top:10px;
+  padding:8px 16px;
+  background:#ef4444;
+  border:none;
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+}
+
 .form-grid {
   max-width:1000px;
   margin:auto;
@@ -61,6 +71,9 @@ h1 { font-family:'Bebas Neue'; font-size:60px; }
 <header>
   <h1>DPL JERSEY SELECTION</h1>
   <p>Select once → permanently locked</p>
+
+  <!-- 🔥 RESET BUTTON -->
+  <button onclick="resetUser()">Reset My Selection</button>
 </header>
 
 <div class="form-grid" id="formGrid"></div>
@@ -101,6 +114,12 @@ const COLOURS = [
 let selections = {};
 let lockedTeam = localStorage.getItem(USER_KEY);
 
+/* 🔥 RESET FUNCTION */
+function resetUser() {
+  localStorage.removeItem(USER_KEY);
+  location.reload();
+}
+
 /* 🎨 UI */
 function buildUI() {
   const grid = document.getElementById("formGrid");
@@ -122,7 +141,6 @@ function buildUI() {
     COLOURS.forEach(col => {
       const isTaken = used.has(col.name) && col.name !== selected;
       const isSelected = selected === col.name;
-
       const disableClick = isTaken || selected || isUserLocked;
 
       colorGrid += `
@@ -177,7 +195,6 @@ async function selectColour(team, colour) {
       return;
     }
 
-    // 🔥 LOCK USER
     localStorage.setItem(USER_KEY, team);
     lockedTeam = team;
 
